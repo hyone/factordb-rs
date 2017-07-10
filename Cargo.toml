@@ -1,0 +1,16 @@
+[package]
+name = "factordb"
+version = "0.1.0"
+authors = ["hyone <hyone.development@gmail.com>"]
+
+[dependencies]
+clap = "2.25.0"
+error-chain = "0.10.0"
+reqwest = "0.7.1"
+serde = "1.0.9"
+serde_derive = "1.0.9"
+serde_json = "1.0.2"
+url = "1.5.1"
+
+[dev-dependencies]
+mockito = "0.8.0"
