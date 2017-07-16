@@ -5,7 +5,7 @@ use url::Url;
 #[cfg(test)]
 use mockito;
 
-use self::errors::{ Result, ResultExt };
+use self::errors::{Result, ResultExt};
 
 #[cfg(not(test))]
 const ENDPOINT: &'static str = "https://factordb.com/api";
@@ -14,12 +14,12 @@ const ENDPOINT: &'static str = "https://factordb.com/api";
 pub struct FactorResult {
     id: String,
     status: String,
-    factors: Vec<(String, usize)>
+    factors: Vec<(String, usize)>,
 }
 
 pub fn request(num: u64) -> Result<FactorResult> {
     let params = [("query", num.to_string())];
-    let uri    = Url::parse_with_params(ENDPOINT, &params)
+    let uri = Url::parse_with_params(ENDPOINT, &params)
         .chain_err(|| "Failed to parse URL")?;
 
     reqwest::get(uri)
@@ -31,12 +31,14 @@ pub fn request(num: u64) -> Result<FactorResult> {
 
 impl FactorResult {
     pub fn factor_list(&self) -> Vec<u64> {
-        self.factors.iter().map(|&(ref num_str, count)| {
-            let num = num_str.parse::<u64>().unwrap();
-            iter::repeat(num).take(count)
-        })
-        .flat_map(|v| v)
-        .collect()
+        self.factors
+            .iter()
+            .map(|&(ref num_str, count)| {
+                let num = num_str.parse::<u64>().unwrap();
+                iter::repeat(num).take(count)
+            })
+            .flat_map(|v| v)
+            .collect()
     }
 
     pub fn json(&self) -> String {
@@ -45,7 +47,7 @@ impl FactorResult {
 }
 
 pub mod errors {
-    error_chain! {}
+    error_chain!{}
 }
 
 #[cfg(test)]
@@ -64,15 +66,18 @@ mod tests {
             .with_body(r#"{"id":"336","status":"FF","factors":[["2",4],["3",1],["7",1]]}"#)
             .create();
 
-        assert_eq!(request(336).expect("succeed to request"), FactorResult {
-            id: "336".into(),
-            status: "FF".into(),
-            factors: vec![
-                ("2".into(), 4),
-                ("3".into(), 1),
-                ("7".into(), 1),
-            ]
-        });
+        assert_eq!(
+            request(336).expect("succeed to request"),
+            FactorResult {
+                id: "336".into(),
+                status: "FF".into(),
+                factors: vec![
+                    ("2".into(), 4),
+                    ("3".into(), 1),
+                    ("7".into(), 1),
+                ]
+            }
+        );
     }
 
     #[test]
@@ -82,36 +87,39 @@ mod tests {
             .with_status(500)
             .create();
 
-         request(336).unwrap_or_else(|err| {
-             panic!(err.description().to_owned());
-         });
+        request(336).unwrap_or_else(|err| {
+            panic!(err.description().to_owned());
+        });
     }
 
     #[test]
     fn test_factor_list() {
         let result = FactorResult {
-           id: "336".into(),
-           status: "FF".into(),
-           factors: vec![
-               ("2".into(), 4),
-               ("3".into(), 1),
-               ("7".into(), 1),
-           ]
-       };
-       assert_eq!(result.factor_list(), vec![2, 2, 2, 2, 3, 7]);
+            id: "336".into(),
+            status: "FF".into(),
+            factors: vec![
+                ("2".into(), 4),
+                ("3".into(), 1),
+                ("7".into(), 1),
+            ]
+        };
+        assert_eq!(result.factor_list(), vec![2, 2, 2, 2, 3, 7]);
     }
 
     #[test]
     fn test_json() {
         let result = FactorResult {
-           id: "336".into(),
-           status: "FF".into(),
-           factors: vec![
-               ("2".into(), 4),
-               ("3".into(), 1),
-               ("7".into(), 1),
-           ]
-       };
-       assert_eq!(result.json(), r#"{"id":"336","status":"FF","factors":[["2",4],["3",1],["7",1]]}"#);
+            id: "336".into(),
+            status: "FF".into(),
+            factors: vec![
+                ("2".into(), 4),
+                ("3".into(), 1),
+                ("7".into(), 1),
+            ]
+        };
+        assert_eq!(
+            result.json(),
+            r#"{"id":"336","status":"FF","factors":[["2",4],["3",1],["7",1]]}"#
+        );
     }
 }

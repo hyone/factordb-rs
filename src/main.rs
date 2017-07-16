@@ -13,7 +13,7 @@ extern crate mockito;
 
 mod client;
 
-use clap::{ App, Arg };
+use clap::{App, Arg};
 use client::errors::Result;
 
 fn run() -> Result<()> {
@@ -43,7 +43,8 @@ fn run() -> Result<()> {
     if args.is_present("raw") {
         println!("{}", result.json())
     } else {
-        let output = result.factor_list()
+        let output = result
+            .factor_list()
             .into_iter()
             .map(|n| n.to_string())
             .collect::<Vec<_>>()
