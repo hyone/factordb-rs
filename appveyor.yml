@@ -1,0 +1,20 @@
+environment:
+  matrix:
+  - target: x86_64-pc-windows-msvc
+    channel: stable
+  # NOTE: pending this target because a depenent library, http-muncher, build failed
+  # - target: i686-pc-windows-gnu
+  # - channel: stable
+
+install:
+  - curl -sSf -o rustup-init.exe https://win.rustup.rs/
+  - rustup-init.exe -y --default-toolchain %channel% --default-host %target%
+  - set PATH=%PATH%;C:\Users\appveyor\.cargo\bin
+  - rustc -vV
+  - cargo -vV
+
+build: false
+
+test_script:
+  - cargo build --verbose
+  - cargo test --verbose -- --test-threads=1
