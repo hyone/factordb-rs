@@ -3,6 +3,10 @@ name = "factordb"
 version = "0.1.0"
 authors = ["hyone <hyone.development@gmail.com>"]
 
+[[bin]]
+name = "factordb"
+doc = false
+
 [dependencies]
 clap = "2.25.0"
 error-chain = "0.10.0"
