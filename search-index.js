@@ -1,0 +1,3 @@
+var searchIndex = {};
+searchIndex["factordb"] = {"doc":"","items":[[3,"FactorResult","factordb","",null,null],[5,"request","","",null,{"inputs":[{"name":"u64"}],"output":{"name":"result"}}],[11,"fmt","","",0,{"inputs":[{"name":"self"},{"name":"formatter"}],"output":{"name":"result"}}],[11,"eq","","",0,{"inputs":[{"name":"self"},{"name":"factorresult"}],"output":{"name":"bool"}}],[11,"ne","","",0,{"inputs":[{"name":"self"},{"name":"factorresult"}],"output":{"name":"bool"}}],[11,"factor_list","","",0,{"inputs":[{"name":"self"}],"output":{"name":"vec"}}],[11,"json","","",0,{"inputs":[{"name":"self"}],"output":{"name":"string"}}]],"paths":[[3,"FactorResult"]]};
+initSearch(searchIndex);
